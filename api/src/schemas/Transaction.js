@@ -13,7 +13,11 @@ const TransactionSchema = new Schema({
     type: Date,
     required: true
   },
-  author: {
+  author_id: {
+    type: Schema.Types.ObjectId,
+    required: true
+  },
+  recipient_id: {
     type: Schema.Types.ObjectId,
     required: true
   }

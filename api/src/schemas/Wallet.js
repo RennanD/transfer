@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const WalletSchema = new Schema({
   balance: {
-    type: String,
+    type: Number,
     required: true
   }, 
   transferKey: {

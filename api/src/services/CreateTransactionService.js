@@ -18,10 +18,13 @@ class CreateTransactionService {
     if(type === 'outcome' && value > authorWallet.balance) {
       throw new Error('Você não possui saudo')
     }
-    
+  
+
     authorWallet.balance -= value;
     userWallet.balance += value;
     
+    console.log(userWallet);
+
     await authorWallet.save();
     await userWallet.save();
     

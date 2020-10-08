@@ -2,14 +2,14 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from '../screens/Home';
-import CreateTransactions from '../screens/CreateTransactions';
+import CreateTransaction from '../screens/CreateTransaction';
 
 const { Screen, Navigator } = createBottomTabNavigator();
 
 const AppRoutes = () => (
-  <Navigator>
+  <Navigator >
     <Screen name="Home" component={Home} />
-    <Screen name="CreateTransactions" component={CreateTransactions} />
+    <Screen name="CreateTransaction" component={CreateTransaction} />
   </Navigator>
 );
 

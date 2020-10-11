@@ -8,9 +8,9 @@ import { useAuth } from '../hooks'
 
 const Routes = () => {
 
-  const { user } = useAuth();
+  const { loggedUser } = useAuth();
 
-  return user ? <AppRoutes /> : <AuthRoutes />;
+  return loggedUser ? <AppRoutes /> : <AuthRoutes />;
 }
 
 export default Routes;

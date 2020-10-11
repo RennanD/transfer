@@ -24,6 +24,8 @@ export const AuthProvider = ({ children }) => {
 
       const storagedUser = await AsyncStorage.getItem('@transfer:user');
 
+      console.log(storagedUser)
+
       if(storagedUser) {
         const parsedUser = JSON.parse(storagedUser);
         setUser(parsedUser);
@@ -36,13 +38,15 @@ export const AuthProvider = ({ children }) => {
 
   const signIn = useCallback(async (email) => {
     try {
-      const response = api.post('/sessions', {
+      const response = await api.post('/sessions', {
         email
       })
 
+      console.log(response.data.user);
+
       const { user } = response.data;
 
-      await AsyncStorage.setItem('@transfer:user');
+      await AsyncStorage.setItem('@transfer:user', JSON.stringify(user));
 
       setUser(user)
 

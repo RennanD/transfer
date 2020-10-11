@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const database = mongoose.connect('mongodb://localhost:27017/transfer', {
+const database = mongoose.connect('mongodb://localhost:27017/youtube', {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,

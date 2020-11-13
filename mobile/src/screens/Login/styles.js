@@ -7,11 +7,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#fff"
   },
-  heroImage: {},
+  heroImage: {
+    alignSelf: "center",
+  },
   input: {
     height: 46,
     width: '100%',
-    borderColor: '#2193f6',
+    borderColor: '#C2185B',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 15,
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
   button: {
     height: 46,
     width: '100%',
-    backgroundColor: '#2193f6',
+    backgroundColor: '#C2185B',
     alignItems:"center",
     justifyContent: "center",
     marginTop: 15
@@ -40,7 +42,7 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   linkButtonText: {
-    color: '#2193f6',
+    color: '#C2185B',
     fontSize: 16,
   }
 })

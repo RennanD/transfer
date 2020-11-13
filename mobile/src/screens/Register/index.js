@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import { RectButton, TextInput } from 'react-native-gesture-handler';
+import { TextInputMask } from 'react-native-masked-text';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -22,54 +23,59 @@ const Register = () => {
 
   const handleRegister = useCallback(async () => {
 
-    console.log(name, email, transferKey)
-
-    if(!email || !name || !transferKey) {
-      Alert.alert('Error', 'Preencha todos os campos para continuar.')
-      return
+    
+    if(name && email && transferKey) {
+      console.log(name, email, transferKey)
+      if(!email || !name || !transferKey) {
+        Alert.alert('Error', 'Preencha todos os campos para continuar.')
+        return
+      }
+  
+      await api.post('/accounts', {
+        name,
+        email,
+        transferKey
+      })
+  
+      await signIn(email)
     }
-
-    await api.post('/accounts', {
-      name,
-      email,
-      transferKey
-    })
-
-    await signIn(email)
 
   },[])
 
   return (
     <View style={styles.container}>
-      <Image source={loginImage} />
+      <Image style={styles.heroImage} source={loginImage} />
       <TextInput
         value={name}
         onChangeText={setName}
         autoCapitalize="words"
         autoCorrect={false}
         placeholder="Digite seu nome"
-        placeholderTextColor="#999"
+        placeholderTextColor="#9E9E9E"
         style={styles.input}
       />
       <TextInput
         value={email}
+        onChangeText={setEmail}
         autoCorrect={false}
         autoCapitalize="none"
-        onChangeText={setEmail}
         placeholder="Digite seu email"
         keyboardType="email-address"
-        placeholderTextColor="#999"
+        placeholderTextColor="#9E9E9E"
         style={styles.input}
       />
-      <TextInput
+      <TextInputMask
         value={transferKey}
         onChangeText={setTransferKey}
         placeholder="Chave de transeferência"
-        placeholderTextColor="#999"
+        placeholderTextColor="#9E9E9E"
         autoCorrect={false}
         keyboardType="number-pad"
         style={styles.input}
-        secureTextEntry
+        type='custom'
+        options={{
+          mask: '9999 99 999'
+        }}
       />
       <RectButton style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText} >Cadastrar conta</Text>

@@ -5,6 +5,6 @@ const WalletController = require('../controller/WalletController');
 const walletRouter = Router();
 const walletController = new WalletController();
 
-walletRouter.post('/', walletController.store);
+walletRouter.get('/', walletController.store);
 
 module.exports = walletRouter;

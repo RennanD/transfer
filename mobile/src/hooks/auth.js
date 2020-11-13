@@ -15,7 +15,7 @@ const AuthContext = createContext({});
 
 
 export const AuthProvider = ({ children }) => {
-  const [loggedUser, setUser] = useState({});
+  const [loggedUser, setUser] = useState();
   const [authLoading, setAuthLoading] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,6 @@ export const AuthProvider = ({ children }) => {
 
       const storagedUser = await AsyncStorage.getItem('@transfer:user');
 
-      console.log(storagedUser)
 
       if(storagedUser) {
         const parsedUser = JSON.parse(storagedUser);
@@ -49,6 +48,7 @@ export const AuthProvider = ({ children }) => {
       await AsyncStorage.setItem('@transfer:user', JSON.stringify(user));
 
       setUser(user)
+      setWallet(wallet)
 
     } catch ({ response }) {
       Alert.alert('Erro', response.data.error);
@@ -57,13 +57,14 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = useCallback(async () => {
     await AsyncStorage.removeItem('@transfer:user');
+    setUser(null)
   },[]);
 
   return (
     <AuthContext.Provider value={{
       signIn,
       signOut,
-      loggedUser
+      loggedUser,
     }}>
       {children}
     </AuthContext.Provider>

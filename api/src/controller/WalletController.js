@@ -8,9 +8,9 @@ class WalletController {
 
     const showWallet = new ShowMyWalletService();
 
-    const myWallet = showWallet.execute(user_id);
+    const myWallet = await showWallet.execute(user_id);
 
-    return myWallet;
+    return response.json(myWallet);
   }
 
 }

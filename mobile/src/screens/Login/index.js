@@ -26,7 +26,7 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={loginImage} />
+      <Image style={styles.heroImage} source={loginImage} />
       <TextInput
         autoCapitalize="none"
         value={email}
@@ -34,7 +34,7 @@ const Login = () => {
         autoCorrect={false}
         placeholder="Digite seu email"
         keyboardType="email-address"
-        placeholderTextColor="#888"
+        placeholderTextColor="#9E9E9E"
         style={styles.input}
       />
       <RectButton

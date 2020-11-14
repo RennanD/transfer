@@ -40,7 +40,7 @@ const Register = () => {
       await signIn(email)
     }
 
-  },[])
+  },[email, name, transferKey])
 
   return (
     <View style={styles.container}>

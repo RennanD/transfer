@@ -16,14 +16,14 @@ class CreateTransactionService {
     const user = await User.findOne({ wallet_id: userWallet._id })
     
     if(type === 'outcome' && value > authorWallet.balance) {
-      throw new Error('Você não possui saudo')
+      throw new Error('Você não possui saldo suficiente.')
     }
   
 
     authorWallet.balance -= value;
     userWallet.balance += value;
     
-    console.log(userWallet);
+    // console.log(userWallet);
 
     await authorWallet.save();
     await userWallet.save();
@@ -49,6 +49,8 @@ class CreateTransactionService {
 
     await user.save();
     await author.save();
+
+    console.log(authorTransaction)
 
     return authorTransaction;
 

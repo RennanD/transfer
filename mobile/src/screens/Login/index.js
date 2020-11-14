@@ -19,8 +19,6 @@ const Login = () => {
 
   const handleSignIn = useCallback(async (userEmail) => {
 
-    console.log(userEmail)
-
     await signIn(userEmail)
   },[])
 

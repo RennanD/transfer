@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Image, TouchableOpacity, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
+import { useIsFocused } from '@react-navigation/native';
+
 import styles from './styles';
 
 import EmptyList from '../../components/EmptyList';
@@ -14,6 +16,9 @@ const Home = () => {
 
   const [wallet, setWallet] = useState('');
   const { loggedUser, signOut } = useAuth();
+
+  const focused = useIsFocused();
+  
 
   useEffect(() => {
     async function loadBalance() {
@@ -29,8 +34,10 @@ const Home = () => {
         console.log(error)
       }
     }
-    loadBalance()
-  },[loggedUser])
+    if(focused) {
+      loadBalance()
+    }
+  },[loggedUser, focused])
 
   return (
     <View style={styles.container}>

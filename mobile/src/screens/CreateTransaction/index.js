@@ -19,24 +19,48 @@ const CreateTransaction = () => {
 
   const [transferKey, setTransferKey] = useState('');
   const [value, setValue] = useState('');
+  const [maskedValue, setMaskedValue] = useState('')
 
   const { loggedUser } = useAuth()
 
-  const handleCreateTransaction = useCallback(async () => {
-    const result = Number(value.replace(/[^0-9\.-]+/g,""));
-    console.log(result)
-    // try {
-    //   await api.post('/transactions', {
-    //     author_id: loggedUser._id,
-    //     type: 'outcome',
-    //     transferKey,
-    //     value
-    //   })
-    //   Alert('Sucesso', `você enviou ${formatBalance}`)
-    // } catch ({response}) {
-    //   Alert('Erro', response.data.error)
-    // }
+  
+
+  const handleChangeValueText = useCallback((_maskedValue, unmaskedValue) => {
+    setValue(unmaskedValue)
+    setMaskedValue(_maskedValue)
   },[])
+
+  const handleCreateTransaction = useCallback(async () => {
+    
+    if(!transferKey) {
+      Alert.alert('Erro', 'Insira a chave de transferência do destinatário.')
+      return
+    }
+
+    if(Number(value) === 0 || !value) {
+      Alert.alert('Erro', 'Insira um valor para a transferência.')
+      return
+    }
+
+    const formattedValue = Number(value)
+
+    try {
+      await api.post(`/transactions/${transferKey}`, {
+        author_id: loggedUser._id,
+        type: 'outcome',
+        value: formattedValue
+      })
+      console.log(response)
+      Alert.alert('Sucesso', `você enviou ${maskedValue}`)
+      setMaskedValue('')
+      setValue('')
+      setTransferKey('')
+
+    } catch ({ response }) {
+      Alert.alert('Erro', response.data.error)
+    }
+  },[value, transferKey, loggedUser._id])
+
 
   return (
     <View style={styles.container}>
@@ -53,7 +77,7 @@ const CreateTransaction = () => {
       >
         <TextInputMask
           value={transferKey}
-          onChange={setTransferKey}
+          onChangeText={setTransferKey}
           autoCapitalize="none"
           autoCorrect={false}
           placeholder="Chave de transferência"
@@ -67,7 +91,8 @@ const CreateTransaction = () => {
         />
         <TextInputMask
           value={value}
-          onChangeText={setValue}
+          includeRawValueInChangeText
+          onChangeText={handleChangeValueText}
           autoCapitalize="none"
           autoCorrect={false}
           placeholder="R$ 0,00"

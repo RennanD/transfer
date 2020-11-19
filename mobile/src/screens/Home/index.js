@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Image, TouchableOpacity, View, Text, FlatList } from 'react-native';
+import {
+  Image, TouchableOpacity, View, Text, FlatList,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { format, parseISO } from 'date-fns';
-import { ptBR } from 'date-fns/locale'
+import { ptBR } from 'date-fns/locale';
 
 import { useIsFocused } from '@react-navigation/native';
 
@@ -17,42 +19,39 @@ import { useAuth } from '../../hooks';
 import formatBalance from '../../utils/formatBalance';
 
 const Home = () => {
-
   const [wallet, setWallet] = useState('');
   const [transactions, setTransactions] = useState([]);
   const { loggedUser, signOut } = useAuth();
 
   const focused = useIsFocused();
-  
 
   useEffect(() => {
     async function loadBalance() {
       try {
         const response = await api.get('/wallet', {
           headers: {
-            user_id: loggedUser._id
-          }
-        })
-        const balance = formatBalance(response.data.balance)
-        setWallet(balance)
+            user_id: loggedUser._id,
+          },
+        });
+        const balance = formatBalance(response.data.balance);
+        setWallet(balance);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
     async function loadTransacations() {
       const response = await api.get('/transactions', {
         headers: {
-          user_id: loggedUser._id
-        }
-      })
-      setTransactions(response.data)
+          user_id: loggedUser._id,
+        },
+      });
+      setTransactions(response.data);
     }
-    if(focused) {
+    if (focused) {
       loadBalance();
       loadTransacations();
     }
-  },[loggedUser, focused])
-
+  }, [loggedUser, focused]);
 
   return (
     <View style={styles.container}>
@@ -60,7 +59,7 @@ const Home = () => {
         <Image
           style={styles.avatar}
           source={{
-            uri: "https://clinicforspecialchildren.org/wp-content/uploads/2016/08/avatar-placeholder.gif"
+            uri: 'https://clinicforspecialchildren.org/wp-content/uploads/2016/08/avatar-placeholder.gif',
           }}
         />
         <View style={styles.userInfo}>
@@ -78,18 +77,18 @@ const Home = () => {
       { !transactions.length ? (
         <EmptyList />
       ) : (
-        <FlatList 
+        <FlatList
           data={transactions}
-          keyExtractor={transaction => transaction._id}
+          keyExtractor={(transaction) => transaction._id}
           contentContainerStyle={{
-            padding: 15
+            padding: 15,
           }}
           showsVerticalScrollIndicator={false}
           renderItem={({ item: transaction }) => (
-            <View style={styles.transactionCard} >
+            <View style={styles.transactionCard}>
               <View style={styles.transactionLeft}>
-                <MaterialIcon 
-                  name={transaction.type === 'income' ? 'bank-transfer-in' : 'bank-transfer-out'} 
+                <MaterialIcon
+                  name={transaction.type === 'income' ? 'bank-transfer-in' : 'bank-transfer-out'}
                   size={30}
                   color={transaction.type === 'income' ? '#25a182' : '#E91E63'}
                 />
@@ -97,27 +96,27 @@ const Home = () => {
               </View>
 
               <View style={styles.transactionInfoContainer}>
-                <Text style={[
-                  ,
-                  styles.transactionTitle
-                ]} >
-                  {transaction.type === 'income' 
-                    ? 'Transferência recebida' 
-                    : 'Transferência enviada'
-                  }
+                <Text style={[,
+                  styles.transactionTitle,
+                ]}
+                >
+                  {transaction.type === 'income'
+                    ? 'Transferência recebida'
+                    : 'Transferência enviada'}
                 </Text>
                 <Text style={styles.transactionUserName}>
                   {transaction.type === 'income' ? transaction.author_id.name : transaction.recipient_id.name}
                 </Text>
                 <Text style={[
-                  styles.transactionValue, 
-                  {color: transaction.type === 'income' ? '#25a182' :'#E91E63'}
-                  ]}>
-                    {formatBalance(transaction.value)}
+                  styles.transactionValue,
+                  { color: transaction.type === 'income' ? '#25a182' : '#E91E63' },
+                ]}
+                >
+                  {formatBalance(transaction.value)}
                 </Text>
                 <Text style={styles.transactionDate}>
                   {format(parseISO(transaction.createdAt), "dd 'de' MMM yyyy", {
-                    locale: ptBR
+                    locale: ptBR,
                   })}
 
                 </Text>
@@ -127,7 +126,7 @@ const Home = () => {
         />
       ) }
     </View>
-  )
-}
+  );
+};
 
 export default Home;

@@ -50,8 +50,6 @@ class CreateTransactionService {
     await user.save();
     await author.save();
 
-    console.log(authorTransaction)
-
     return authorTransaction;
 
   }

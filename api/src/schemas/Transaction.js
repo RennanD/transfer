@@ -15,11 +15,13 @@ const TransactionSchema = new Schema({
   },
   author_id: {
     type: Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'User'
   },
   recipient_id: {
     type: Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'User'
   }
 }, {
   timestamps: true

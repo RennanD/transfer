@@ -1,26 +1,26 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import {
+  View, Text, Image, TouchableOpacity,
+} from 'react-native';
 import { RectButton, TextInput } from 'react-native-gesture-handler';
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native';
 
 import styles from './styles';
 
-import { loginImage } from '../../assets/images'
+import { loginImage } from '../../assets/images';
 
 import { useAuth } from '../../hooks';
 
 const Login = () => {
-
   const { navigate } = useNavigation();
   const { signIn } = useAuth();
 
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
 
   const handleSignIn = useCallback(async (userEmail) => {
-
-    await signIn(userEmail)
-  },[])
+    await signIn(userEmail);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -39,7 +39,7 @@ const Login = () => {
         onPress={() => handleSignIn(email)}
         style={styles.button}
       >
-        <Text style={styles.buttonText} >Entrar</Text>
+        <Text style={styles.buttonText}>Entrar</Text>
       </RectButton>
 
       <TouchableOpacity
@@ -50,6 +50,6 @@ const Login = () => {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 export default Login;

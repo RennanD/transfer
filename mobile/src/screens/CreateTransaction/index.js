@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useCallback, useState } from 'react';
 import {
   Alert,
@@ -9,62 +10,55 @@ import { TextInputMask } from 'react-native-masked-text';
 
 import { RectButton } from 'react-native-gesture-handler';
 
-import styles from './styles'
+import styles from './styles';
 
 import { transferIcon } from '../../assets/icons';
 import api from '../../services/api';
 import { useAuth } from '../../hooks';
 
 const CreateTransaction = () => {
-
   const [transferKey, setTransferKey] = useState('');
   const [value, setValue] = useState('');
-  const [maskedValue, setMaskedValue] = useState('')
+  const [maskedValue, setMaskedValue] = useState('');
 
-  const { loggedUser } = useAuth()
-
-  
+  const { loggedUser } = useAuth();
 
   const handleChangeValueText = useCallback((_maskedValue, unmaskedValue) => {
-    setValue(unmaskedValue)
-    setMaskedValue(_maskedValue)
-  },[])
+    setValue(unmaskedValue);
+    setMaskedValue(_maskedValue);
+  }, []);
 
   const handleCreateTransaction = useCallback(async () => {
-    
-    if(!transferKey) {
-      Alert.alert('Erro', 'Insira a chave de transferência do destinatário.')
-      return
+    if (!transferKey) {
+      Alert.alert('Erro', 'Insira a chave de transferência do destinatário.');
+      return;
     }
 
-    if(Number(value) === 0 || !value) {
-      Alert.alert('Erro', 'Insira um valor para a transferência.')
-      return
+    if (Number(value) === 0 || !value) {
+      Alert.alert('Erro', 'Insira um valor para a transferência.');
+      return;
     }
 
-    const formattedValue = Number(value)
+    const formattedValue = Number(value);
 
     try {
       await api.post(`/transactions/${transferKey}`, {
         author_id: loggedUser._id,
         type: 'outcome',
-        value: formattedValue
-      })
-      console.log(response)
-      Alert.alert('Sucesso', `você enviou ${maskedValue}`)
-      setMaskedValue('')
-      setValue('')
-      setTransferKey('')
-
+        value: formattedValue,
+      });
+      Alert.alert('Sucesso', `você enviou ${maskedValue}`);
+      setMaskedValue('');
+      setValue('');
+      setTransferKey('');
     } catch ({ response }) {
-      Alert.alert('Erro', response.data.error)
+      Alert.alert('Erro', response.data.error);
     }
-  },[value, transferKey, loggedUser._id])
-
+  }, [value, transferKey, loggedUser._id]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.header} >
+      <View style={styles.header}>
         <Image source={transferIcon} />
         <Text style={styles.pageTitle}>Transferências</Text>
       </View>
@@ -84,9 +78,9 @@ const CreateTransaction = () => {
           keyboardType="number-pad"
           placeholderTextColor="#BDBDBD"
           style={styles.input}
-          type='custom'
+          type="custom"
           options={{
-            mask: '9999 99 999'
+            mask: '9999 99 999',
           }}
         />
         <TextInputMask
@@ -97,7 +91,7 @@ const CreateTransaction = () => {
           autoCorrect={false}
           placeholder="R$ 0,00"
           keyboardType="number-pad"
-          type={'money'}
+          type="money"
           placeholderTextColor="#9E9E9E"
           style={styles.input}
         />
@@ -110,6 +104,6 @@ const CreateTransaction = () => {
       </View>
     </View>
   );
-}
+};
 
 export default CreateTransaction;

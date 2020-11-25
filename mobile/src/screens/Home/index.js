@@ -1,10 +1,15 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+
 import {
   Image, TouchableOpacity, View, Text, FlatList,
 } from 'react-native';
+
+import OneSignal from 'react-native-onesignal';
+
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -54,6 +59,34 @@ const Home = () => {
     }
   }, [loggedUser, focused]);
 
+  const onIds = useCallback((device) => {
+    console.log(device)
+  },[])
+
+  const onOpened = useCallback((notification_data) => {
+    console.log(notification_data)
+  },[])
+
+  const onReceived = useCallback((notification) => {
+    console.log(notification)
+  },[])
+
+
+  useEffect(() => {
+    OneSignal.init("22cf3141-a541-4180-b570-007f0da89c2e")
+
+    OneSignal.addEventListener('received', onReceived);
+    OneSignal.addEventListener('opened', onOpened);
+    OneSignal.addEventListener('ids', onIds);
+
+    return () => {
+      OneSignal.removeEventListener('received');
+      OneSignal.removeEventListener('opened');
+      OneSignal.removeEventListener('ids');
+    }
+  },[])
+
+ 
   return (
     <View style={styles.container}>
       <View style={styles.header}>

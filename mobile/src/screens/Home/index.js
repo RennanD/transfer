@@ -59,9 +59,17 @@ const Home = () => {
     }
   }, [loggedUser, focused]);
 
-  const onIds = useCallback((device) => {
+  const onIds = useCallback( async (device) => {
     console.log(device)
-  },[])
+    const {pushToken, userId } = device
+
+    await api.post('/notifications/register', {
+      user_id: loggedUser._id,
+      notification_user_id: userId,
+      push_token: pushToken
+    })
+
+  },[loggedUser])
 
   const onOpened = useCallback((notification_data) => {
     console.log(notification_data)
@@ -86,7 +94,7 @@ const Home = () => {
     }
   },[])
 
- 
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>

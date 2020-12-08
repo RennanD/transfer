@@ -29,6 +29,7 @@ const CreateTransaction = () => {
   }, []);
 
   const handleCreateTransaction = useCallback(async () => {
+    console.log('oi');
     if (!transferKey) {
       Alert.alert('Erro', 'Insira a chave de transferência do destinatário.');
       return;

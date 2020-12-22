@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Icon from 'react-native-vector-icons/Feather';
 
-import Home from '../screens/Home';
+import TransactionRoutes from './transaction.routes';
 import CreateTransaction from '../screens/CreateTransaction';
 
 const { Screen, Navigator } = createBottomTabNavigator();
@@ -17,8 +17,8 @@ const AppRoutes = () => (
     }}
   >
     <Screen
-      name="Home"
-      component={Home}
+      name="App"
+      component={TransactionRoutes}
       options={{
         tabBarIcon: ({ color }) =>
           <Icon

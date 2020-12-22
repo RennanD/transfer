@@ -14,7 +14,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import styles from './styles';
 
@@ -30,6 +30,7 @@ const Home = () => {
   const { loggedUser, signOut } = useAuth();
 
   const focused = useIsFocused();
+  const { navigate } = useNavigation();
 
   useEffect(() => {
     async function loadBalance() {
@@ -59,9 +60,15 @@ const Home = () => {
     }
   }, [loggedUser, focused]);
 
+  const handleShowTransacation = useCallback(async (transaction_id) => {
+    const response = await api.get(`/transactions/${transaction_id}`);
+    navigate('Receipt')
+  },[navigate])
+
   const onIds = useCallback( async (device) => {
-    console.log(device)
     const {pushToken, userId } = device
+
+
 
     await api.post('/notifications/register', {
       user_id: loggedUser._id,
@@ -127,7 +134,10 @@ const Home = () => {
           }}
           showsVerticalScrollIndicator={false}
           renderItem={({ item: transaction }) => (
-            <View style={styles.transactionCard}>
+            <TouchableOpacity
+              style={styles.transactionCard}
+              onPress={() => {handleShowTransacation(transaction._id)}}
+            >
               <View style={styles.transactionLeft}>
                 <MaterialIcon
                   name={transaction.type === 'income' ? 'bank-transfer-in' : 'bank-transfer-out'}
@@ -163,7 +173,7 @@ const Home = () => {
 
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
         />
       ) }

@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { color } from 'react-native-reanimated';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
   transactionCard: {
     flexDirection: 'row',
     marginBottom: 20
-  }, 
+  },
   transactionLeft: {
     width: 30,
     height: 90,
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     paddingVertical: 3,
     width: '85%'
-  }, 
+  },
   transactionTitle: {
     fontSize: 16,
     fontWeight: '700',
@@ -74,13 +73,13 @@ const styles = StyleSheet.create({
     color: '#666',
     fontWeight: '300',
     marginBottom: 4
-  }, 
+  },
   transactionValue: {
     fontSize: 18,
     color: '#333',
     fontWeight: '400',
     marginBottom: 4
-  }, 
+  },
   transactionDate: {
     position: 'absolute',
     right: 2,

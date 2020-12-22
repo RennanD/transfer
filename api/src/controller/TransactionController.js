@@ -1,5 +1,6 @@
 const CreateTransactionService = require("../services/CreateTransactionService");
 const ListTransactionsService = require("../services/ListTransactionsService");
+const ShowTransactionService = require("../services/ShowTransactionService");
 
 class TransactionController {
 
@@ -10,6 +11,21 @@ class TransactionController {
     const transactions = await listTransactions.execute(user_id)
 
     return response.json(transactions)
+  }
+
+  async show(request, response) {
+    const { transaction_id } = request.params;
+
+    try {
+      const showTransaction = new ShowTransactionService();
+
+      const transaction = await showTransaction.execute(transaction_id);
+
+      return response.json(transaction);
+    } catch (error) {
+      return response.status(400).json(error.message);
+    }
+
   }
 
   async store(request, response) {

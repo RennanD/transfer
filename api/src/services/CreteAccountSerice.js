@@ -13,7 +13,7 @@ class CreteAccountSerice {
 
     const wallet = await Wallet.create({
       transferKey,
-      balance: 0
+      balance: 1000
     })
 
     const checkUser = await User.findOne({ email });

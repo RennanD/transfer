@@ -56,9 +56,19 @@ export const AuthProvider = ({ children }) => {
   },[])
 
   const signOut = useCallback(async () => {
-    await AsyncStorage.removeItem('@transfer:user');
-    setUser(null)
-  },[]);
+    const tokenNotification = await AsyncStorage.getItem('@transfer:token');
+    console.log(tokenNotification)
+    if(tokenNotification) {
+      await api.patch('/notifications/active-status', {
+        user_id: loggedUser._id,
+        notification_user_id: tokenNotification,
+        active_status: false
+      });
+      await AsyncStorage.removeItem('@transfer:user');
+      await AsyncStorage.removeItem('@transfer:token');
+      setUser(null)
+    }
+  },[loggedUser]);
 
   return (
     <AuthContext.Provider value={{

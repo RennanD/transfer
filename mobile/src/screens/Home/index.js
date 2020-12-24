@@ -23,6 +23,7 @@ import api from '../../services/api';
 import { useAuth } from '../../hooks';
 
 import formatBalance from '../../utils/formatBalance';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Home = () => {
   const [wallet, setWallet] = useState('');
@@ -61,29 +62,37 @@ const Home = () => {
   }, [loggedUser, focused]);
 
   const handleShowTransacation = useCallback(async (transaction_id) => {
-    const response = await api.get(`/transactions/${transaction_id}`);
-    navigate('Receipt')
+    navigate('Receipt', {
+      receipt_id: transaction_id
+    })
   },[navigate])
 
   const onIds = useCallback( async (device) => {
     const {pushToken, userId } = device
 
+    const existentToken = await AsyncStorage.getItem('@transfer:token');
 
+    if(!existentToken) {
+      AsyncStorage.setItem('@transfer:token', userId);
 
-    await api.post('/notifications/register', {
-      user_id: loggedUser._id,
-      notification_user_id: userId,
-      push_token: pushToken
-    })
+      await api.post('/notifications/register', {
+        user_id: loggedUser._id,
+        notification_user_id: userId,
+        push_token: pushToken
+      })
+    }
 
   },[loggedUser])
 
-  const onOpened = useCallback((notification_data) => {
-    console.log(notification_data)
-  },[])
+  const onOpened = useCallback((data) => {
+
+    const { transaction_id } = data.notification.payload.additionalData
+
+    handleShowTransacation(transaction_id);
+  },[handleShowTransacation])
 
   const onReceived = useCallback((notification) => {
-    console.log(notification)
+    console.log('recebeu');
   },[])
 
 

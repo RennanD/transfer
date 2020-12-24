@@ -39,23 +39,14 @@ class CreateTransactionService {
       await userWallet.save();
       
 
-      const userNotification = await NotificationUser.findOne({
+      const userNotification = await NotificationUser.find({
         user_id: user._id,
         active: true
       })
 
       console.log(userNotification)
 
-      const notification = {
-        headings: {
-          'en': 'Nova transferência recebida'
-        },
-        contents: {
-          'en': `${author.name} fez uma transferência no valor de ${formatValue(value)}`,
-        },
-        channel_for_external_user_ids: "push",
-        include_player_ids: [userNotification.notification_user_id]
-      };
+      
 
       const userTransaction = await Transaction.create({
         type: 'income',
@@ -72,6 +63,20 @@ class CreateTransactionService {
         author_id,
         recipient_id: user._id
       })
+
+      const notification = {
+        headings: {
+          'en': 'Nova transferência recebida'
+        },
+        contents: {
+          'en': `${author.name} fez uma transferência no valor de ${formatValue(value)}`,
+        },
+        channel_for_external_user_ids: "push",
+        data: {
+          transaction_id: userTransaction._id
+        },
+        include_player_ids: userNotification.map(user => user.notification_user_id)
+      };
       
       user.transactions.push(userTransaction._id);
       author.transactions.push(authorTransaction._id);

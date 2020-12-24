@@ -9,7 +9,9 @@ class RegisterNotificationUserService {
     })
 
     if(existentUserNotification) {
-      throw new Error('O usuário já possui este token de notificações ativo!')
+      existentUserNotification.active = true;
+      await existentUserNotification.save();
+      // throw new Error('O usuário já possui este token de notificações ativo!');
     }
     
     const notificationUser =  await NotificationUser.create({

@@ -11,15 +11,7 @@ class ShowTransactionService {
       throw new Error('Transferência não encontrada.')
     }
 
-    const data = {
-      recipient: transaction.recipient_id,
-      author: transaction.author_id,
-      ...transaction
-    };
-
-    console.log(data);
-
-    return data;
+    return transaction;
   }
 }
 

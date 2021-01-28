@@ -19,6 +19,7 @@
     "date-fns": "^2.0.0-beta.5",
     "react": "16.13.1",
     "react-native": "0.63.3",
+    "react-native-dotenv": "^2.5.1",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-intl": "^1.0.0",
     "react-native-masked-text": "^1.13.0",
